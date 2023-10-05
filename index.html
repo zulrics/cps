@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Your styling here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center title">Clicks Per Second Game</h1>
+        <div class="card text-center">
+            <div class="card-header">
+                Click the button as fast as you can!
+            </div>
+            <div class="card-body">
+                <h2 id="count">0</h2>
+                <button id="clickButton" class="btn btn-primary btn-lg">Click me!</button>
+                <h2 id="timer">10</h2>
+            </div>
+        </div>
+        <div class="card text-center mt-5">
+            <div class="card-header">
+                Leaderboard
+            </div>
+            <div class="card-body">
+                <ul id="leaderboard" class="list-group">
+                    <!-- Leaderboard will be populated here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let count = 0;
+        let time = 10;
+        let isGameStarted = false;
+        const clickButton = document.getElementById('clickButton');
+        const countElement = document.getElementById('count');
+        const timerElement = document.getElementById('timer');
+
+        function startGame() {
+            isGameStarted = true;
+            count = 0;
+            time = 10;
+            countElement.textContent = count;
+            timerElement.textContent = time;
+
+            const interval = setInterval(() => {
+                time--;
+                timerElement.textContent = time;
+
+                if (time === 0) {
+                    clearInterval(interval);
+                    isGameStarted = false;
+                    gameOver();
+                }
+            }, 1000);
+        }
+
+        function gameOver() {
+            alert(`Game over! Your CPS is ${count / 10}.`);
+
+            // Get leaderboard from local storage
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+
+            // Add new score to leaderboard and sort it in descending order
+            leaderboard.push(count);
+            leaderboard.sort((a, b) => b - a);
+
+            // Save the top 10 scores only
+            leaderboard = leaderboard.slice(0, 10);
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+            // Display leaderboard
+            const leaderboardElement = document.getElementById('leaderboard');
+            leaderboardElement.innerHTML = '';
+            leaderboard.forEach((score, index) => {
+                const li = document.createElement('li');
+                li.textContent = `#${index + 1}: ${score} clicks`;
+                li.className = 'list-group-item';
+                leaderboardElement.appendChild(li);
+            });
+        }
+
+        clickButton.addEventListener('click', () => {
+            if (!isGameStarted) {
+                startGame();
+            }
+
+            count++;
+            countElement.textContent = count;
+        });
+    </script>
+</body>
+</html>
