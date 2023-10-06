@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        /* Your styling here */
+        body, .card {
+            background-color: #222;
+            color: #fff;
+        }
+        .btn-dark {
+            background-color: #444;
+            border-color: #444;
+        }
+        .btn-dark:active {
+            background-color: #555 !important;
+            border-color: #555 !important;
+            transition: all 0.1s;
+        }
+        .card, .btn-dark {
+            border: none;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+        .card {
+            margin-top: 20px;
+        }
+        .title {
+            font-size: 3rem;
+            text-align: center;
+            margin: 20px 0;
+            color: #fff;
+        }
+        .list-group-item {
+            background-color: #303030;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center title">Clicks Per Second Game</h1>
+        <h1 class="title">Clicks Per Second Game</h1>
         <div class="card text-center">
             <div class="card-header">
                 Click the button as fast as you can!
             </div>
             <div class="card-body">
                 <h2 id="count">0</h2>
-                <button id="clickButton" class="btn btn-primary btn-lg">Click me!</button>
+                <button id="clickButton" class="btn btn-dark btn-lg">Click me!</button>
                 <h2 id="timer">10</h2>
             </div>
         </div>
@@ -73,7 +102,7 @@
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
 
             // Display leaderboard
-            const leaderboardElement = document.getElementById('leaderboard');
+            const leaderboardElement = document.querySelector('#leaderboard');
             leaderboardElement.innerHTML = '';
             leaderboard.forEach((score, index) => {
                 const li = document.createElement('li');
